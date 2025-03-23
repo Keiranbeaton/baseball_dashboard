@@ -1,16 +1,13 @@
 from dataclasses import dataclass
 
+from timeframe import Timeframe
+
 
 @dataclass
 class Team:
+    """A class representing a team and storing split stats."""
+
     name: str
-    fullseason: int
-    last_three_weeks: int
-    facing_lefty: int
-    facing_righty: int
-    facing_lefty_last_three_weeks: int
-    facing_righty_last_three_weeks: int
-    home: int
-    away: int
-    home_last_three_weeks: int
-    away_last_three_weeks: int
+    park: str
+    full_season: Timeframe
+    last_three: Timeframe
