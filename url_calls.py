@@ -18,23 +18,10 @@ def get_full_season():
     driver.get(url)
 
     try:
-        buttons = driver.find_element(By.ID, "root-buttons-stats").find_elements(By.TAG_NAME, "div")
-        advanced_button = buttons[1]
-        advanced_button.click()
-    
-    
-        grid = driver.find_element(By.CLASS_NAME, "fg-data-grid")
-        print("grid", grid)
-        table = grid.find_element(By.TAG_NAME, "tbody")
-        print("table", table)
-        rows = table.find_elements(By.TAG_NAME, "tr")
+        rows = driver.find_element(By.CLASS_NAME, "fg-data-grid").find_element(By.TAG_NAME, "tbody").find_elements(By.TAG_NAME, "tr")
         for r in rows:
             stats = r.find_elements(By.TAG_NAME, "td")
-            index = 0
-            print("Length of tds",len(stats))
-            for s in stats:
-                print(f"index: {index}, stat: {s.text}")
-                index += 1
+            #Team name is stats[2], BB% is 4, K% is 5, OPS is 10, BABIP is 12, WRC+ is 16
     except Exception as e:
         print("Hit an exception", e)
     
