@@ -1,16 +1,18 @@
 """Module for opening webpages with selenium and returning data from therein"""
 
+from datetime import datetime, timedelta
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-from datetime import datetime, timedelta
+
 
 from url_builders import fg_splits_page
 
 
 def get_stat_dicts(start_date, end_date, split):
-    """Function that gets full season stats and returns a Stats tuple for each team listed."""
+    """Function that gets full season stats and returns a Stats tuple for each
+    team listed.
+    """
     driver = webdriver.Chrome()
     driver.implicitly_wait(20)
     url = fg_splits_page(start_date, end_date, f"{split}")
@@ -24,7 +26,8 @@ def get_stat_dicts(start_date, end_date, split):
         )
         for r in rows:
             stats = r.find_elements(By.TAG_NAME, "td")
-            # Team name is stats[2], BB% is 4, K% is 5, OPS is 10, BABIP is 12, WRC+ is 16
+            # Team name is stats[2], BB% is 4, K% is 5, OPS is 10, BABIP is 12,
+            # WRC+ is 16
             return_array.append(
                 {
                     "name": stats[2].text,
