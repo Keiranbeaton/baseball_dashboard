@@ -5,6 +5,6 @@ from dataclasses import dataclass
 class Matchup:
     """Class holding matchup data."""
 
-    park: str
+    home_team: str
     pitcher_handedness: str
     pitcher_era: float
