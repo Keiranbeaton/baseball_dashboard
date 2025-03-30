@@ -34,7 +34,6 @@ def get_stat_dicts(start_date, end_date, split):
                     stats: {
                         "walk_rate": float(stats[4].text.replace("%", "")),
                         "k_rate": float(stats[5].text.replace("%", "")),
-                        "ops": float(stats[10].text),
                         "babip": float(stats[12].text),
                         "wrc": int(stats[16].text),
                     },
