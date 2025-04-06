@@ -6,7 +6,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
+from matchup import Matchup
 from url_builders import fg_splits_page
+from teams_list import build_list
 
 
 def get_stat_dicts(start_date, end_date, split):
@@ -14,7 +16,7 @@ def get_stat_dicts(start_date, end_date, split):
     team listed.
     """
     driver = webdriver.Chrome()
-    driver.implicitly_wait(20)
+    driver.implicitly_wait(10)
     url = fg_splits_page(start_date, end_date, f"{split}")
     driver.get(url)
     return_array = []
@@ -66,3 +68,27 @@ def get_three_weeks(split):
     end = (datetime.today() - timedelta(weeks=3)).strftime("%Y-%m-%d")
     dict_array = get_stat_dicts(end, start, split)
     return dict_array
+
+
+def get_matchups():
+    team_array = build_list()
+    return_array = []
+    driver = webdriver.Chrome()
+    driver.implicitly_wait(10)
+    driver.get("fangraphs.com/roster-resource/probables-grid")
+
+    try:
+        rows = (
+            driver.find_element(By.CLASS_NAME, "fg-data-grid")
+            .find_element(By.TAG_NAME, "tbody")
+            .find_elements(By.TAG_NAME, "tr")
+        )
+        for r in rows:
+            data = r.find_elements(By.TAG_NAME, "td")
+            if len(data) > 0:
+                abbrev = data[0].text
+                for t in team_array:
+                    if t.abbrev == abbrev:
+                       
+    except Exception as e:
+        print("Exception, ", e)

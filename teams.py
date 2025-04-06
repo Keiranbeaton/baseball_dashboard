@@ -13,3 +13,7 @@ class Team:
         self.schedule = []
         self.full = Timeframe()
         self.recent = Timeframe()
+
+        def add_matchup(self, matchup):
+            """function for pushing matchup to schedule list"""
+            self.schedule.append(matchup)
