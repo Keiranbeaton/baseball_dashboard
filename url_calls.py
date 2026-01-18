@@ -7,8 +7,9 @@ from selenium.webdriver.common.by import By
 
 
 from matchup import Matchup
+from pitcher import Pitcher
 from url_builders import fg_splits_page
-from teams_list import build_list, get_team_by_abbrev
+from teams_list import get_team_by_abbrev, get_team_by_name
 
 
 def get_stat_dicts(start_date, end_date, split):
@@ -44,8 +45,35 @@ def get_stat_dicts(start_date, end_date, split):
     except Exception as e:
         print("Hit an exception", e)
     driver.close()
-    print(return_array)
     return return_array
+
+
+def get_park_factors():
+    """Function that gets park factors from baseball savant and returns"""
+    driver = webdriver.Chrome()
+    driver.implicitly_wait(10)
+    url = "https://baseballsavant.mlb.com/leaderboard/statcast-park-factors"
+    driver.get(url)
+    park_factors_array = []
+    try:
+        rows = (
+            driver.find_element(By.ID, "parkFactors")
+            .find_element(By.TAG_NAME, "tbody")
+            .find_elements(By.TAG_NAME, "tr")
+        )
+        for r in rows:
+            cells = r.find_elements(By.TAG_NAME, "td")
+            team = {
+                "name": get_team_by_name(
+                    cells[1].find_element(By.TAG_NAME, "span").text
+                ),
+                "factor": cells[5].find_element(By.TAG_NAME, "span").text,
+            }
+            park_factors_array.append(team)
+    except Exception as e:
+        print("Hit an exception", e)
+    driver.close()
+    return park_factors_array
 
 
 def get_full_season(split):
@@ -70,8 +98,28 @@ def get_three_weeks(split):
     return dict_array
 
 
+def get_pitcher(link):
+    """Function that takes in a fangraphs link to a pitcher page and returns
+    a Pitcher object with the data filled in.
+    """
+    driver = webdriver.Chrome()
+    driver.implicitly_wait(10)
+    driver.get(link)
+    try:
+        handedness = driver.find_elements(By.CLASS_NAME, "header_item_6AFbi")[2].text[
+            -1
+        ]
+        name = driver.find_element(By.ID, "h1").text
+        pitcher = Pitcher(name, handedness)
+    except Exception as e:
+        print("Exception getting pitcher data: ", e)
+        pitcher = Pitcher("N/A", "N/A")
+    driver.close()
+    return pitcher
+
+
 def get_matchups():
-    team_array = build_list()
+    """Function that gets the opponent, probable pitcher and park for for a team for the next 10 days"""
     return_array = []
     driver = webdriver.Chrome()
     driver.implicitly_wait(10)
@@ -84,15 +132,15 @@ def get_matchups():
             .find_elements(By.TAG_NAME, "tr")
         )
         for r in rows:
-            data = r.find_elements(By.TAG_NAME, "td")
-            if len(data) > 0:
-                abbrev = data[0].text
-                for t in team_array:
-                    if t[abbrev] == abbrev:
-                        """TODO: finish building matchup objecting once I know the structure of the table element I'm pulling from"""
-                        t.add_matchup(
-                            Matchup(
-                        )
+            team_matchups = r.find_elements(By.TAG_NAME, "td")
+            if len(team_matchups) > 0:
+                matchups_dict = {"abbrev": team_matchups[0].text, "matchups": []}
+                "TODO: finish building matchup objecting once I know the structure of the table element I'm pulling from"
+                for i in range(1, 10):
 
+                    single_matchup = Matchup()
+                    matchups_dict["matchups"].append()
     except Exception as e:
         print("Exception, ", e)
+    driver.close()
+    return return_array

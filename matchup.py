@@ -6,7 +6,7 @@ from pitcher import Pitcher
 class Matchup:
     """Class holding matchup data."""
 
-    def __init__(self, date, team, opponent, park_factor):
+    def __init__(self, date, team, opponent, park_factor=0):
         self.date = date
         self.park_factor = park_factor
         self.pitcher = Pitcher("N/A", "N/A")

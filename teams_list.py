@@ -46,3 +46,12 @@ def get_team_by_abbrev(abbrev):
         if team.abbrev == abbrev:
             return team
     return None
+
+
+def get_team_by_name(name):
+    """Function that takes in a team name and returns the Team object."""
+    teams = build_list()
+    for team in teams:
+        if team.name == name:
+            return team
+    return None

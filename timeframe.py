@@ -8,13 +8,8 @@ class Timeframe:
     time."""
 
     def __init__(self):
-        self.total = Split(0, 0, 0, 0)
-        self.rhp = Split(0, 0, 0, 0)
-        self.lhp = Split(0, 0, 0, 0)
-
-    def set_total(self, stat_obj):
-        """function that sets total equal to the stat_obj being passed in."""
-        self.total = stat_obj
+        self.rhp = Split(0)
+        self.lhp = Split(0)
 
     def set_rhp(self, stat_obj):
         """function that sets rhp equal to the stat_obj being passed in."""
