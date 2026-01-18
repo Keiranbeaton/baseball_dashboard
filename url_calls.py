@@ -1,6 +1,6 @@
 """Module for opening webpages with selenium and returning data from therein"""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 
 from matchup import Matchup
 from url_builders import fg_splits_page
-from teams_list import build_list
+from teams_list import build_list, get_team_by_abbrev
 
 
 def get_stat_dicts(start_date, end_date, split):
@@ -53,8 +53,8 @@ def get_full_season(split):
     dict with the full season dates and returns the array from stat dict
     getter.
     """
-
-    dict_array = get_stat_dicts("2025-03-01", "2025-11-01", split)
+    year = str(datetime.today().year)
+    dict_array = get_stat_dicts(f"{year}-03-01", f"{year}-11-01", split)
     return dict_array
 
 
@@ -88,7 +88,11 @@ def get_matchups():
             if len(data) > 0:
                 abbrev = data[0].text
                 for t in team_array:
-                    if t.abbrev == abbrev:
-                       
+                    if t[abbrev] == abbrev:
+                        """TODO: finish building matchup objecting once I know the structure of the table element I'm pulling from"""
+                        t.add_matchup(
+                            Matchup(
+                        )
+
     except Exception as e:
         print("Exception, ", e)

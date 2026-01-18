@@ -37,3 +37,12 @@ def build_list():
     team_list.append(Team("White Sox", "CWS"))
     team_list.append(Team("Yankees", "NYY"))
     return team_list
+
+
+def get_team_by_abbrev(abbrev):
+    """Function that takes in a team abbreviation and returns the Team object."""
+    teams = build_list()
+    for team in teams:
+        if team.abbrev == abbrev:
+            return team
+    return None
